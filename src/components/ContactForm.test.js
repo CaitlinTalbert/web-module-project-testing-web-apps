@@ -64,13 +64,13 @@ test('renders "lastName is a required field" if an last name is not entered and 
 });
 
 test('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
-    const firstNameField = screen.getByLabelText(/first name*/i)
-    const lastNameField = screen.getByLabelText(/last name*/i)
-    const emailField = screen.getByLabelText(/email*/i)
+    const firstNameField = screen.getByLabelText(/First Name*/i)
+    const lastNameField = screen.getByLabelText(/Last Name*/i)
+    const emailField = screen.getByLabelText(/Email*/i)
 
     userEvent.type(firstNameField, "caitlin");
-    userEvent.type(firstNameField, "talbert"); 
-    userEvent.type(firstNameField, "zerotalb@yahoo.com"); 
+    userEvent.type(lastNameField, "talbert"); 
+    userEvent.type(emailField, "zerotalb@yahoo.com"); 
     
     const submitBtn = screen.getByRole("button"); 
     userEvent.click(submitBtn); 
@@ -90,4 +90,28 @@ test('renders all firstName, lastName and email text when submitted. Does NOT re
 });
 
 test('renders all fields text when all fields are submitted.', async () => {
+    const firstNameField = screen.getByLabelText(/First Name*/i)
+    const lastNameField = screen.getByLabelText(/Last Name*/i)
+    const emailField = screen.getByLabelText(/Email*/i)
+    const messageField = screen.getByLabelText(/Message/i)
+
+    userEvent.type(firstNameField, "first name");
+    userEvent.type(lastNameField, "last name"); 
+    userEvent.type(emailField, "email"); 
+    userEvent.type(messageField, "message")
+
+    const submitBtn = await screen.findByRole("button"); 
+    userEvent.click(submitBtn); 
+
+    await waitFor(() => {
+        const firstNameDisplay = screen.queryByText("first name")
+        const lastNameDisplay = screen.queryByText("last name")
+        const emailDisplay = screen.queryByText("email")
+        const messageDisplay = screen.queryByText("message")
+
+        expect(firstNameDisplay).toBeInTheDocument();
+        expect(lastNameDisplay).toBeInTheDocument();
+        expect(emailDisplay).toBeInTheDocument();
+        expect(messageDisplay).toBeInTheDocument();
+    });
 });
